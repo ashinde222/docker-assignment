@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-
+		 agent{
+                 	label{
+                    		label "qa"
+                    		customWorkspace "/mnt/jenkins-slave"
+                	     }
+        		}
     stages {
 
         stage('Clone Repo') {
