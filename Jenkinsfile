@@ -1,9 +1,7 @@
 pipeline {
 		 agent{
                  	label{
-                    		label "qa"
-                    		customWorkspace "/mnt/jenkins-slave"
-                	     }
+                    		label "buildt-in"                	     }
         		}
     stages {
 
