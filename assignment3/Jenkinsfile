@@ -1,0 +1,60 @@
+pipeline {
+    
+        agent {
+            lable{
+                label "qa"
+            }
+        }
+        stages{
+                
+                stage('clone repo'){
+                    steps{
+                        git branch: 'main', url:'https://github.com/ashinde222/docker-assignment.git'
+                    }
+                }    
+                stage('delete old container'){
+                    steps {
+                        sh 'docker rm -f C1 C2 C3  || true'
+                    }
+                }
+                stage('docker Volume create'){
+                    steps{
+                        sh 'docker volume create velocity'
+                    }
+                }
+                stage('deploy Q1'){
+                    steps{
+                    sh '''
+                    git checkout 2026-Q1
+                    docker run -dp 81:80 -v velocity:/usr/local/apache2/htdocs --name C1 httpd
+                    docker cp index.html C1:/usr/local/apache2/htdocs/index.html
+                    docker exec C1 chmod -R 777 /usr/local/apache2/htdocs/index.html
+                    '''
+                    }   
+                }
+                stage('deploy Q2'){
+                    steps{
+                    sh '''
+                    git checkout 2026-Q2
+                    docker run -dp 91:80 -v velocity:/usr/local/apache2/htdocs --name C2 httpd
+                    docker cp index.html C2:/usr/local/apache2/htdocs/index.html
+                    docker exec C2 chmod -R 777 /usr/local/apache2/htdocs/index.html
+                    '''
+                    }   
+                }
+                stage('deploy Q3'){
+                    steps{
+                    sh '''
+                    git checkout 2026-Q3
+                    docker run -dp 9180:80 -v velocity:/usr/local/apache2/htdocs --name C3 httpd
+                    docker cp index.html C3:/usr/local/apache2/htdocs/index.html
+                    docker exec C3 chmod -R 777 /usr/local/apache2/htdocs/index.html
+                    '''
+                    }   
+                }
+            }
+        
+            
+        }
+    
+
